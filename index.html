@@ -59,8 +59,8 @@ section{margin-top:44px}
 .noto{background:var(--card);border-radius:6px;padding:26px 18px 28px;border:1px solid var(--line)}
 .noto p{font-size:14.5px;margin:0 0 16px}
 #notoStory{text-align:center}
-.noto #notoStory p{font-size:min(16px,calc((100vw - 78px)/19.6));line-height:2;margin:0 0 24px}
-.noto #notoStory .headline{font-size:min(28px,calc((100vw - 78px)/11.6));line-height:1.6;letter-spacing:.04em;margin:6px 0 26px}
+.noto #notoStory p{font-size:15px;font-size:clamp(14px,calc((100vw - 78px)/19.6),16px);line-height:2;margin:0 0 24px}
+.noto #notoStory .headline{font-size:24px;font-size:clamp(21px,calc((100vw - 78px)/11.6),28px);line-height:1.6;letter-spacing:.04em;margin:6px 0 26px}
 .noto figure{margin:0 0 22px;position:relative}
 .noto figure img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;display:block;background:var(--bg-soft)}
 .noto figcaption{position:absolute;left:0;bottom:0;max-width:92%;padding:7px 14px;font-size:17px;font-weight:700;letter-spacing:.06em;line-height:1.4;color:#fff;background:rgba(44,58,71,.72);border-radius:0 6px 0 4px}
@@ -87,7 +87,7 @@ input[type=text],input[type=tel],textarea{width:100%;padding:12px;font-size:16px
 select{width:100%;padding:12px;font-size:16px;font-family:inherit;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
 select:focus,input:focus,textarea:focus{outline:2px solid var(--main);outline-offset:0;border-color:var(--main)}
 .row{display:flex;gap:8px}
-.row input{flex:1}
+.row input{flex:1;min-width:0}
 .err{color:var(--err);font-size:12.5px;margin:4px 0 0;min-height:0}
 .hint{font-size:12px;color:var(--muted);margin:4px 0 0}
 .btn{display:block;width:100%;padding:15px;font-size:16px;font-family:inherit;font-weight:500;letter-spacing:.1em;border-radius:4px;border:1px solid var(--deep);background:var(--deep);color:#fff;cursor:pointer}
@@ -200,17 +200,23 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
       <h2 class="sec-title">お届け先のご入力</h2>
       <div class="formbox">
         <div class="chosen" id="chosenView"></div>
-        <p class="privacy">ご入力いただいた個人情報は、引き出物の発送のみに使用し、それ以外の目的では使用いたしません。</p>
+        <p class="privacy">ご入力いただいた個人情報は、引き出物の発送のみに使用し、それ以外の目的では使用いたしません。情報は新郎新婦が管理するGoogleスプレッドシートに保管し、発送のため、配送業者(ヤマト運輸)と商品の発送元に、お名前・ご住所・お電話番号をお伝えします。発送が終わりましたら、情報は削除いたします。</p>
         <div class="formerror hidden" id="formError"></div>
         <form id="form" novalidate autocomplete="on">
           <div class="field">
+            <label class="lb" for="code">申込コード<span class="req">必須</span></label>
+            <input type="tel" id="code" name="code" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="例）1234">
+            <p class="hint">QRコードのカードに書かれている、4けたの数字です。QRコードから開いた方は、自動で入っています。</p>
+            <p class="err" data-for="code"></p>
+          </div>
+          <div class="field">
             <label class="lb" for="name">お名前<span class="req">必須</span></label>
-            <input type="text" id="name" name="name" autocomplete="name" placeholder="例）山田 太郎">
+            <input type="text" id="name" name="name" maxlength="100" autocomplete="name" placeholder="例）山田 太郎">
             <p class="err" data-for="name"></p>
           </div>
           <div class="field">
             <label class="lb" for="kana">ふりがな<span class="req">必須</span></label>
-            <input type="text" id="kana" name="kana" autocomplete="off" placeholder="例）やまだ たろう">
+            <input type="text" id="kana" name="kana" maxlength="100" autocomplete="off" placeholder="例）やまだ たろう">
             <p class="hint">ひらがなまたはカタカナでご入力ください。</p>
             <p class="err" data-for="kana"></p>
           </div>
@@ -225,13 +231,13 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
           </div>
           <div class="field">
             <label class="lb" for="address">ご住所<span class="req">必須</span></label>
-            <input type="text" id="address" name="address" autocomplete="street-address" placeholder="番地まで入れてください">
+            <input type="text" id="address" name="address" maxlength="200" autocomplete="street-address" placeholder="番地まで入れてください">
             <p class="hint" id="zipMsg">番地まで、ご自身で続きをご入力ください。建物名・部屋番号は、下の専用の欄にご入力ください。</p>
             <p class="err" data-for="address"></p>
           </div>
           <div class="field">
             <label class="lb" for="building">建物名・部屋番号<span class="opt">任意</span></label>
-            <input type="text" id="building" name="building" autocomplete="address-line2" placeholder="例）〇〇マンション 301号室">
+            <input type="text" id="building" name="building" maxlength="100" autocomplete="address-line2" placeholder="例）〇〇マンション 301号室">
             <p class="hint">マンション・アパートなどの方は、必ずご入力ください。一戸建ての方は、空欄で大丈夫です。</p>
             <p class="err" data-for="building"></p>
           </div>
@@ -256,7 +262,7 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
           </div>
           <div class="field">
             <label class="lb" for="absence">お届けできない期間<span class="opt">任意</span></label>
-            <input type="text" id="absence" name="absence" placeholder="例）12月20日から1月5日は不在です">
+            <input type="text" id="absence" name="absence" maxlength="200" placeholder="例）12月20日から1月5日は不在です">
             <p class="hint">ご不在などで、受け取れない期間があれば、ご入力ください。なければ空欄で大丈夫です。</p>
             <p class="err" data-for="absence"></p>
           </div>
@@ -353,7 +359,7 @@ const CONFIG = {
       owner: "新婦セレクト",
       name: "クレンジング",
       desc: "普段頑張っているすべての貴女へ、お家を守ってくれている奥様へ、お肌への上質なご褒美はいかがでしょうか？",
-      features: ["W洗顔不要", "敏感肌でも安心", "朝晩使用で1.5〜2ヶ月"],
+      features: ["W洗顔不要", "敏感肌の方にも使いやすい", "朝晩使用で1.5〜2ヶ月"],
       // 商品ページの追加の説明。title=見出し / text=文章 / list=行ごとの一覧 / grid=2列の枠 / small=小さな文字 / fold:true=押すと開く
       sections: [
         { title: "商品について",
@@ -366,7 +372,7 @@ const CONFIG = {
           list: [
             { name: "カレンデュラ", desc: "植物由来の成分。肌をすこやかに保ちます。" },
             { name: "ツボ草エキス", desc: "植物由来の成分。肌を整え、うるおいを与えます。" },
-            { name: "ビタミンE", desc: "抗酸化成分として配合。うるおいを守り、すこやかな肌を保ちます。" }
+            { name: "ビタミンE", desc: "うるおいを守る成分を配合。すこやかな肌を保ちます。" }
           ] },
         { title: "ご使用方法", fold: true,
           text: "500円玉大の量を手に取り、顔全体と首元になじませます。\n摩擦や圧を加えず、30秒から1分間ほど、円を描くようにやさしくマッサージし、ぬるま湯で洗い流してください。\n一度でメイクが落ち切らない場合は、もう一度同じようにお使いください。" },
@@ -379,7 +385,7 @@ const CONFIG = {
           "独自の先進技術と厳選された成分を融合した製品は、肌本来のコンディションを整え、健やかで美しい肌へ導きます。うるおいとハリに満ちた、内側から輝くようななめらかな肌を目指せる、専門性の高いスキンケアブランドです。"
         ],
         logo: "images/brand-logo.png",   // ブランド名のロゴ画像
-        image: ""                        // 創業者・本社社屋などの写真(あれば images/brand.jpg など)
+        image: ""                        // 創業者・本社社屋などの写真(あれば images フォルダに brand.jpg などを入れて、ここに書く)
       },
       short: "普段頑張っているすべての貴女へ、お家を守ってくれている奥様へ、お肌への上質なご褒美はいかがでしょうか？",   // トップのボタンに添える言葉
       noto: false,
@@ -437,6 +443,7 @@ function imgOrPlaceholder(src, label){
 
 /* ---------- 締切 ---------- */
 function isClosed(){ return Date.now() > DEADLINE; }
+function setHashQuietly(h){ history.replaceState(null, "", location.pathname + location.search + h); }   // 履歴を増やさずにアドレスだけ直す
 function applyDeadline(){
   if (isClosed()) showView("closed");
 }
@@ -478,7 +485,6 @@ function openProduct(key){
       <div class="fold-body hidden" id="fold${i}">${body(x)}</div>
     </div>` : `
     <div class="sec"><h3 class="items-title">${esc(x.title)}</h3>${body(x)}</div>`).join("");
-  const smalls = "";
   const notes = (p.notes || []).map(x => `
     <div class="sec"><h3 class="items-title">${esc(x.title)}</h3><p>${esc(x.text)}</p></div>`).join("");
   const brand = p.brand ? `
@@ -510,15 +516,22 @@ function pick(){
 function route(){
   if (isClosed()){ showView("closed"); return; }
   if (finished){ showView(finished); return; }
+  if (sending){   // 送信している間は、画面を動かさない
+    if (location.hash !== "#/confirm") setHashQuietly("#/confirm");
+    showView("confirm");
+    return;
+  }
   const h = location.hash;
   if (h === "#/a" || h === "#/b"){
     openProduct(h === "#/a" ? "A" : "B");
+  } else if (h === "#/confirm" && choice && data){
+    showView("confirm");
   } else if (h === "#/form" && choice){
     const p = CONFIG.PRODUCTS[choice];
     $("chosenView").innerHTML = `お選びの引き出物　<b>${esc(p.name)}</b>(${esc(p.owner)})　<a href="#/">選びなおす</a>`;
     showView("form");
   } else {
-    if (h && h !== "#/") history.replaceState(null, "", "#/");
+    if (h && h !== "#/") setHashQuietly("#/");
     showView("top");
   }
   window.scrollTo(0, 0);
@@ -577,22 +590,25 @@ async function lookupZip(){
   try{
     const r = await fetch("https://zipcloud.ibsnet.co.jp/api/search?zipcode=" + z);
     const j = await r.json();
+    if (digits($("zip").value) !== z) return;   // 調べている間に郵便番号が変わったら、古い結果は使わない
     if (j.results && j.results[0]){
       const a = j.results[0];
       const base = a.address1 + a.address2 + a.address3;
       const cur = $("address").value.trim();
-      if (!cur || cur === ($("address").dataset.auto || "")){
+      const updated = !cur || cur === ($("address").dataset.auto || "");
+      if (updated){
         $("address").value = base;
         $("address").dataset.auto = base;
       }
       lastZip = z;
-      msg.textContent = "住所を入れました。番地を続けてご入力ください。";
+      msg.textContent = updated ? "住所を入れました。番地を続けてご入力ください。" : "入力済みのご住所はそのままにしています。郵便番号と合っているか、ご確認ください。";
       $("address").focus();
       $("address").setSelectionRange($("address").value.length, $("address").value.length);
     } else {
       msg.textContent = "該当する住所が見つかりませんでした。お手数ですが住所を直接ご入力ください。";
     }
   }catch(e){
+    if (digits($("zip").value) !== z) return;
     msg.textContent = "住所を自動で入れられませんでした。お手数ですが住所を直接ご入力ください。";
   }
 }
@@ -605,21 +621,25 @@ function setErr(name, msg){
 }
 $("form").addEventListener("submit", e => {
   e.preventDefault();
+  if (sending) return;
   if (isClosed()){ applyDeadline(); return; }
   $("formError").classList.add("hidden");
   let ok = true;
-  const name = toHalf($("name").value).replace(/\s+/g, " ").trim();
+  const name = $("name").value.replace(/\s+/g, " ").trim();
   const zip = digits($("zip").value);
   const address = $("address").value.trim();
   const tel = digits($("tel").value);
   const time = $("time").value;
-  const kana = $("kana").value.replace(/\s+/g, " ").trim();
+  const kana = $("kana").value.normalize("NFKC").replace(/\s+/g, " ").trim();
   const building = $("building").value.replace(/\s+/g, " ").trim();
   const absence = $("absence").value.replace(/\s+/g, " ").trim();
+  const code = digits($("code").value);
 
   if (!choice){ location.hash = "#/"; return; }
+  const codeOk = /^\d{4}$/.test(code);
+  setErr("code", codeOk ? "" : "申込コード(4けたの数字)を入力してください。"); if (!codeOk) ok = false;
   setErr("name", name ? "" : "お名前を入力してください。"); if (!name) ok = false;
-  const kanaOk = /^[ぁ-んァ-ヶー ]+$/.test(kana);
+  const kanaOk = /^[ぁ-ゖァ-ヺー・ ]+$/.test(kana);
   setErr("kana", kanaOk ? "" : "ふりがなは、ひらがなまたはカタカナで入力してください。"); if (!kanaOk) ok = false;
   setErr("zip", zip.length === 7 ? "" : "郵便番号は7けたで入力してください。"); if (zip.length !== 7) ok = false;
   setErr("address", address ? "" : "ご住所を入力してください。"); if (!address) ok = false;
@@ -632,7 +652,7 @@ $("form").addEventListener("submit", e => {
     if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
     return;
   }
-  data = {choice, name, kana, zip, address, tel, time, building, absence};
+  data = {choice, code, name, kana, zip, address, tel, time, building, absence};
   const p = CONFIG.PRODUCTS[choice];
   $("cProduct").textContent = `${p.name}(${p.owner})`;
   $("cName").textContent = name;
@@ -644,14 +664,12 @@ $("form").addEventListener("submit", e => {
   $("cBuilding").textContent = building || "なし";
   $("cAbsence").textContent = absence || "なし";
   $("sendError").classList.add("hidden");
-  showView("confirm");
-  window.scrollTo(0, 0);
+  if (location.hash === "#/confirm") route(); else location.hash = "#/confirm";
 });
 
 $("backBtn").addEventListener("click", () => {
   if (sending) return;
-  showView("form");
-  window.scrollTo(0, 0);
+  location.hash = "#/form";
 });
 
 /* ---------- 送信(連打防止つき) ---------- */
@@ -659,46 +677,70 @@ function showSendError(msg){
   const el = $("sendError");
   el.textContent = msg; el.classList.remove("hidden");
 }
+let lastFailed = null;   // 通信に失敗したときの送信内容(返事だけが消えた場合の判断に使う)
+const FIELD_NAMES = {code:"申込コード", name:"お名前", kana:"ふりがな", zip:"郵便番号", address:"ご住所", tel:"電話番号", time:"お届け希望の時間帯", building:"建物名・部屋番号", absence:"お届けできない期間"};
+function finish(kind){
+  finished = kind;
+  showView(kind);
+  window.scrollTo(0, 0);
+}
+function resetSendBtn(){
+  const btn = $("sendBtn");
+  btn.disabled = false; $("backBtn").disabled = false;
+  btn.textContent = "この内容で送信する";
+  sending = false;
+}
 $("sendBtn").addEventListener("click", async () => {
   if (sending) return;               // 連打防止(送信中は何もしない)
-  if (isClosed()){ applyDeadline(); return; }
+  if (isClosed()){ finish("closed"); return; }
   sending = true;
   const btn = $("sendBtn");
   btn.disabled = true; $("backBtn").disabled = true;
   btn.textContent = "送信しています…";
   $("sendError").classList.add("hidden");
+  const payload = JSON.stringify(data);
+  let j;
   try{
     if (!/^https:\/\//.test(CONFIG.GAS_URL)) throw new Error("not-configured");
     const res = await fetch(CONFIG.GAS_URL, {
       method: "POST",
       headers: {"Content-Type": "text/plain;charset=utf-8"},   // 事前確認通信を避けるため text/plain
-      body: JSON.stringify(data)
+      body: payload
     });
-    const j = await res.json();
-    if (j.status === "ok"){
-      finished = "done";
-      showView("done");
-      window.scrollTo(0, 0);
-      return;                         // 成功後はボタンを戻さない(二重送信防止)
-    }
-    if (j.status === "duplicate"){
-      finished = "dup";
-      showView("dup");
-      window.scrollTo(0, 0);
-      return;
-    }
-    if (j.status === "closed"){ applyDeadline(); return; }
-    throw new Error(j.message || "error");
+    j = await res.json();
   }catch(err){
+    // 通信の失敗
+    lastFailed = payload;
+    resetSendBtn();
+    if (location.hash !== "#/confirm") location.hash = "#/confirm";
     showSendError("送信できませんでした。電波のよい場所で、もう一度お試しください。何度も失敗する場合は新郎新婦までお知らせください。");
-    btn.disabled = false; $("backBtn").disabled = false;
-    btn.textContent = "この内容で送信する";
-    sending = false;
+    return;
   }
+  if (j.status === "ok"){ finish("done"); return; }           // 成功後はボタンを戻さない(二重送信防止)
+  if (j.status === "duplicate"){ finish(lastFailed === payload ? "done" : "dup"); return; }   // 同じ内容の送り直しなら、前の送信が届いていたと考えて完了にする
+  if (j.status === "closed"){ finish("closed"); return; }     // サーバーの締切判定を優先する
+  resetSendBtn();
+  if (location.hash !== "#/confirm") setHashQuietly("#/confirm");
+  showView("confirm");
+  if (j.status === "badcode"){
+    location.hash = "#/form";
+    setErr("code", "申込コードが違います。カードに書かれている4けたの数字をご確認ください。");
+    setTimeout(() => $("code").scrollIntoView({behavior:"smooth", block:"center"}), 300);
+    return;
+  }
+  if (j.status === "full"){
+    showSendError("申し訳ありません。ただいま受付を停止しています。新郎新婦までお知らせください。");
+    return;
+  }
+  const f = FIELD_NAMES[j.message];
+  showSendError(f ? `「${f}」の入力内容をご確認ください。「修正する」を押して直してください。`
+                  : "送信できませんでした。しばらくしてから、もう一度お試しください。何度も失敗する場合は新郎新婦までお知らせください。");
 });
 
 /* ---------- 起動 ---------- */
 $("thanksText").innerHTML = CONFIG.THANKS;
+const qc = new URLSearchParams(location.search).get("c");   // QRコードのアドレスの ?c=〇〇〇〇
+if (qc) $("code").value = digits(qc).slice(0, 8);
 renderCards();
 renderNoto();
 $("productView").addEventListener("click", e => {
