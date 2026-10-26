@@ -129,7 +129,7 @@ a.card{text-decoration:none;color:inherit}
 .fold:last-of-type{border-bottom:1px solid var(--line)}
 .fold-head{display:flex;justify-content:space-between;align-items:center;width:100%;padding:16px 2px;background:none;border:0;font-family:inherit;cursor:pointer;color:var(--deep);text-align:left}
 .fold-title{font-family:"Shippori Mincho",serif;font-weight:700;font-size:16px;letter-spacing:.06em}
-.fold-state{font-size:13px;color:var(--muted)}
+.fold-state{font-size:26px;font-weight:300;line-height:1;color:var(--deep);width:28px;text-align:center}
 .fold-body{padding:0 2px 16px}
 .fold-body .plain li:last-child{border-bottom:0}
 .fold + .sec,.sec + .fold{margin-top:22px}
@@ -420,7 +420,7 @@ function openProduct(key){
     ${x.small ? `<p class="small">${esc(x.small)}</p>` : ""}`;
   const secs = (p.sections || []).map((x, i) => x.fold ? `
     <div class="fold">
-      <button type="button" class="fold-head" aria-expanded="false" aria-controls="fold${i}"><span class="fold-title">${esc(x.title)}</span><span class="fold-state">ひらく</span></button>
+      <button type="button" class="fold-head" aria-expanded="false" aria-controls="fold${i}"><span class="fold-title">${esc(x.title)}</span><span class="fold-state">+</span></button>
       <div class="fold-body hidden" id="fold${i}">${body(x)}</div>
     </div>` : `
     <div class="sec"><h3 class="items-title">${esc(x.title)}</h3>${body(x)}</div>`).join("");
@@ -637,7 +637,7 @@ $("productView").addEventListener("click", e => {
   if (!h) return;
   const open = h.getAttribute("aria-expanded") !== "true";
   h.setAttribute("aria-expanded", open ? "true" : "false");
-  h.querySelector(".fold-state").textContent = open ? "とじる" : "ひらく";
+  h.querySelector(".fold-state").textContent = open ? "\u2212" : "+";
   $(h.getAttribute("aria-controls")).classList.toggle("hidden", !open);
 });
 $("pickBtn").addEventListener("click", pick);
