@@ -124,6 +124,21 @@ a.card{text-decoration:none;color:inherit}
 .feat ul{margin:0;padding:0;list-style:none}
 .feat li{padding:8px 12px;margin-bottom:6px;background:var(--card);border-left:3px solid var(--gold);font-size:14.5px;font-weight:500;color:var(--deep)}
 .brand p{font-size:14px;margin:0 0 10px}
+.sec{margin-top:22px}
+.fold{border-top:1px solid var(--line)}
+.fold:last-of-type{border-bottom:1px solid var(--line)}
+.fold-head{display:flex;justify-content:space-between;align-items:center;width:100%;padding:16px 2px;background:none;border:0;font-family:inherit;cursor:pointer;color:var(--deep);text-align:left}
+.fold-title{font-family:"Shippori Mincho",serif;font-weight:700;font-size:16px;letter-spacing:.06em}
+.fold-state{font-size:13px;color:var(--muted)}
+.fold-body{padding:0 2px 16px}
+.fold-body .plain li:last-child{border-bottom:0}
+.fold + .sec,.sec + .fold{margin-top:22px}
+.sec p{font-size:14.5px;margin:0 0 10px}
+.sec .small{font-size:12px;color:var(--muted);line-height:1.9}
+.plain{margin:0;padding:0;list-style:none}
+.plain li{padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--deep)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid2 div{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:12px 8px;text-align:center;font-size:13.5px;font-weight:500;color:var(--deep)}
 .items-title{font-size:15px;margin:0 0 10px}
 .items .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .items figure{margin:0}
@@ -293,6 +308,18 @@ const CONFIG = {
       name: "クレンジング",
       desc: "普段頑張っているすべての貴女へ、お肌へ特別なご褒美はいかがでしょうか？",
       features: ["W洗顔不要", "敏感肌でも安心", "朝晩使用で1.5〜2ヶ月"],
+      // 商品ページの追加の説明。title=見出し / text=文章 / list=行ごとの一覧 / grid=2列の枠 / small=小さな文字 / fold:true=押すと開く
+      sections: [
+        { title: "商品について",
+          text: "ミルクタイプのクレンジングです。保湿をしながら、メイク汚れや汚染物質をやさしく取り除きます。\n石けんを含まない、ジェントルなクレンジングミルクで、植物由来の成分が豊富。乾燥を防ぎ、肌がもともと持つ水分のバランスを保ちながら、清潔で落ち着いた肌に仕上げます。" },
+        { title: "使っていない成分",
+          grid: ["SLSフリー", "パラベンフリー", "石油化学製品フリー", "プロピレングリコールフリー"] },
+        { title: "有用成分", fold: true,
+          list: ["カレンデュラ", "ツボ草エキス", "ビタミンE(抗酸化成分)"] },
+        { title: "ご使用方法", fold: true,
+          text: "500円玉大の量を手に取り、顔全体と首元になじませます。\n摩擦や圧を加えず、30秒から1分間ほど、円を描くようにやさしくマッサージし、ぬるま湯で洗い流してください。\n一度でメイクが落ち切らない場合は、もう一度同じようにお使いください。" },
+        { title: "配合成分", fold: true, small: "水、エチルヘキサン酸セテアリル、グリセリン、シクロペンタシロキサン、セタノール、クエン酸ステアリン酸グリセリル、セテアリルアルコール、フェノキシエタノール、パンテノール、（アクリル酸Na/アクリロイルジメチルタウリンNa）コポリマー、イソヘキサデカン、カプリリルグリコール、酢酸トコフェロール、BG、ヒドロキシエチルセルロース、ココアンホジ酢酸2Na、クロルフェネシン、カプリル酸グリセリル、アラントイン、キュウリ果実エキス、エチルヘキシルグリセリン、ポリソルベート80、塩化Na、香料、クエン酸、グリコール酸Na、オレイン酸ソルビタン、トウキンセンカ花エキス、ツボクサ葉/茎エキス、シロバナインドソケイ花エキス、酢酸Na、イソプロパノール、セルロース、ソルビン酸K、安息香酸Na、ソルビン酸、サリチル酸ベンジル" }
+      ],
       brand: {
         name: "クリスティーナ",
         text: [
@@ -386,6 +413,18 @@ function openProduct(key){
     }</div></div>` : "";
   const feat = (p.features && p.features.length) ? `
     <div class="feat"><h3 class="items-title">商品の特徴</h3><ul>${p.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>` : "";
+  const body = x => `
+    ${x.text ? `<p>${esc(x.text).replace(/\n/g, "<br>")}</p>` : ""}
+    ${x.list ? `<ul class="plain">${x.list.map(i => `<li>${esc(i)}</li>`).join("")}</ul>` : ""}
+    ${x.grid ? `<div class="grid2">${x.grid.map(i => `<div>${esc(i)}</div>`).join("")}</div>` : ""}
+    ${x.small ? `<p class="small">${esc(x.small)}</p>` : ""}`;
+  const secs = (p.sections || []).map((x, i) => x.fold ? `
+    <div class="fold">
+      <button type="button" class="fold-head" aria-expanded="false" aria-controls="fold${i}"><span class="fold-title">${esc(x.title)}</span><span class="fold-state">ひらく</span></button>
+      <div class="fold-body hidden" id="fold${i}">${body(x)}</div>
+    </div>` : `
+    <div class="sec"><h3 class="items-title">${esc(x.title)}</h3>${body(x)}</div>`).join("");
+  const smalls = "";
   const brand = p.brand ? `
     <div class="brand"><h3 class="items-title">ブランドのご紹介　${esc(p.brand.name)}</h3>
     ${p.brand.image ? `<div class="ph" style="margin-bottom:10px">${imgOrPlaceholder(p.brand.image, p.brand.name)}</div>` : ""}
@@ -397,7 +436,7 @@ function openProduct(key){
       <h2 class="pname">${esc(p.name)}</h2>
       <p>${p.preparing ? "ただいま準備中です。" : ""}${esc(p.desc)}</p>
       ${sup}
-    </div>${feat}${items}${brand}`;
+    </div>${feat}${secs}${items}${brand}${smalls}`;
   $("notoSection").classList.toggle("hidden", !p.noto);
   document.querySelectorAll(".pickBtn").forEach(b => {
     b.disabled = !!p.preparing;
@@ -593,6 +632,14 @@ $("sendBtn").addEventListener("click", async () => {
 $("thanksText").innerHTML = CONFIG.THANKS;
 renderCards();
 renderNoto();
+$("productView").addEventListener("click", e => {
+  const h = e.target.closest(".fold-head");
+  if (!h) return;
+  const open = h.getAttribute("aria-expanded") !== "true";
+  h.setAttribute("aria-expanded", open ? "true" : "false");
+  h.querySelector(".fold-state").textContent = open ? "とじる" : "ひらく";
+  $(h.getAttribute("aria-controls")).classList.toggle("hidden", !open);
+});
 $("pickBtn").addEventListener("click", pick);
 $("pickInline").addEventListener("click", pick);
 window.addEventListener("hashchange", route);
