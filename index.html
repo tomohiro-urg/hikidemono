@@ -81,9 +81,11 @@ section{margin-top:44px}
 .chosen{background:var(--bg-soft);border-left:3px solid var(--gold);padding:8px 12px;font-size:13.5px;margin-bottom:18px}
 .field{margin-bottom:18px}
 label.lb{display:block;font-weight:500;font-size:13.5px;margin-bottom:4px;color:var(--deep)}
+.opt{font-size:10.5px;color:var(--deep);background:var(--bg-soft);padding:0 6px;border-radius:2px;margin-left:6px;vertical-align:1px}
 .req{font-size:10.5px;color:#fff;background:var(--gold);padding:0 6px;border-radius:2px;margin-left:6px;vertical-align:1px}
 input[type=text],input[type=tel],textarea{width:100%;padding:12px;font-size:16px;font-family:inherit;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
-input:focus,textarea:focus{outline:2px solid var(--main);outline-offset:0;border-color:var(--main)}
+select{width:100%;padding:12px;font-size:16px;font-family:inherit;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--main);outline-offset:0;border-color:var(--main)}
 .row{display:flex;gap:8px}
 .row input{flex:1}
 .err{color:var(--err);font-size:12.5px;margin:4px 0 0;min-height:0}
@@ -207,6 +209,12 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
             <p class="err" data-for="name"></p>
           </div>
           <div class="field">
+            <label class="lb" for="kana">ふりがな<span class="req">必須</span></label>
+            <input type="text" id="kana" name="kana" autocomplete="off" placeholder="例）やまだ たろう">
+            <p class="hint">ひらがなまたはカタカナでご入力ください。</p>
+            <p class="err" data-for="kana"></p>
+          </div>
+          <div class="field">
             <label class="lb" for="zip">郵便番号<span class="req">必須</span></label>
             <div class="row">
               <input type="tel" id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" placeholder="例）4400000">
@@ -217,15 +225,40 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
           </div>
           <div class="field">
             <label class="lb" for="address">ご住所<span class="req">必須</span></label>
-            <input type="text" id="address" name="address" autocomplete="street-address" placeholder="番地・建物名・部屋番号まで入れてください">
-            <p class="hint" id="zipMsg">番地・建物名・部屋番号は、ご自身で続きをご入力ください。</p>
+            <input type="text" id="address" name="address" autocomplete="street-address" placeholder="番地まで入れてください">
+            <p class="hint" id="zipMsg">番地まで、ご自身で続きをご入力ください。建物名・部屋番号は、下の専用の欄にご入力ください。</p>
             <p class="err" data-for="address"></p>
+          </div>
+          <div class="field">
+            <label class="lb" for="building">建物名・部屋番号<span class="opt">任意</span></label>
+            <input type="text" id="building" name="building" autocomplete="address-line2" placeholder="例）〇〇マンション 301号室">
+            <p class="hint">マンション・アパートなどの方は、必ずご入力ください。一戸建ての方は、空欄で大丈夫です。</p>
+            <p class="err" data-for="building"></p>
           </div>
           <div class="field">
             <label class="lb" for="tel">電話番号<span class="req">必須</span></label>
             <input type="tel" id="tel" name="tel" inputmode="tel" autocomplete="tel" placeholder="例）09012345678">
             <p class="hint">ハイフンはあってもなくても大丈夫です。</p>
             <p class="err" data-for="tel"></p>
+          </div>
+          <div class="field">
+            <label class="lb" for="time">お届け希望の時間帯<span class="req">必須</span></label>
+            <select id="time" name="time">
+              <option value="指定なし">指定なし</option>
+              <option value="午前中">午前中</option>
+              <option value="14時から16時">14時から16時</option>
+              <option value="16時から18時">16時から18時</option>
+              <option value="18時から20時">18時から20時</option>
+              <option value="19時から21時">19時から21時</option>
+            </select>
+            <p class="hint">クロネコヤマトでお届けします。</p>
+            <p class="err" data-for="time"></p>
+          </div>
+          <div class="field">
+            <label class="lb" for="absence">お届けできない期間<span class="opt">任意</span></label>
+            <input type="text" id="absence" name="absence" placeholder="例）12月20日から1月5日は不在です">
+            <p class="hint">ご不在などで、受け取れない期間があれば、ご入力ください。なければ空欄で大丈夫です。</p>
+            <p class="err" data-for="absence"></p>
           </div>
           <button type="submit" class="btn">入力内容を確認する</button>
         </form>
@@ -240,9 +273,13 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
         <dl>
           <dt>お選びの引き出物</dt><dd id="cProduct"></dd>
           <dt>お名前</dt><dd id="cName"></dd>
+          <dt>ふりがな</dt><dd id="cKana"></dd>
           <dt>郵便番号</dt><dd id="cZip"></dd>
           <dt>ご住所</dt><dd id="cAddress"></dd>
+          <dt>建物名・部屋番号</dt><dd id="cBuilding"></dd>
           <dt>電話番号</dt><dd id="cTel"></dd>
+          <dt>お届け希望の時間帯</dt><dd id="cTime"></dd>
+          <dt>お届けできない期間</dt><dd id="cAbsence"></dd>
         </dl>
         <p class="hint" style="margin-bottom:14px">送信後の変更はできません。内容をよくご確認ください。</p>
         <button type="button" class="btn" id="sendBtn">この内容で送信する</button>
@@ -306,6 +343,9 @@ const CONFIG = {
         { name: "烏賊醤油干し", src: "images/product-a-4.jpg" }
       ],
       itemsNote: "※海況により素材が一部変わる可能性があります",
+      notes: [                          // 商品ページに出す案内(title=見出し / text=文章)
+        { title: "アレルギーについて", text: "この商品は、魚介類(魚・イカなど)を使用しています。アレルギーをお持ちの方や、食べられないものがある方は、お選びになる前にご注意ください。ご不明な点は、新郎新婦までお知らせください。" }
+      ],
       noto: true,                       // true=この商品ページに「能登への想い」「仕入れ先」を出す
       supplierName: "渚水産"           // 仕入れ先(カードに表示)
     },
@@ -439,6 +479,8 @@ function openProduct(key){
     </div>` : `
     <div class="sec"><h3 class="items-title">${esc(x.title)}</h3>${body(x)}</div>`).join("");
   const smalls = "";
+  const notes = (p.notes || []).map(x => `
+    <div class="sec"><h3 class="items-title">${esc(x.title)}</h3><p>${esc(x.text)}</p></div>`).join("");
   const brand = p.brand ? `
     <div class="brand"><h3 class="items-title">ブランドのご紹介</h3>
     ${p.brand.logo ? `<div class="brand-logo"><img src="${esc(p.brand.logo)}" alt="${esc(p.brand.name)}" loading="lazy" decoding="async"></div>` : `<p class="sub">${esc(p.brand.name)}</p>`}
@@ -451,7 +493,7 @@ function openProduct(key){
       <h2 class="pname">${esc(p.name)}</h2>
       <p>${p.preparing ? "ただいま準備中です。" : ""}${esc(p.desc)}</p>
       ${sup}
-    </div>${feat}${secs}${items}${brand}${smalls}`;
+    </div>${feat}${secs}${items}${notes}${brand}`;
   $("notoSection").classList.toggle("hidden", !p.noto);
   document.querySelectorAll(".pickBtn").forEach(b => {
     b.disabled = !!p.preparing;
@@ -544,7 +586,7 @@ async function lookupZip(){
         $("address").dataset.auto = base;
       }
       lastZip = z;
-      msg.textContent = "住所を入れました。番地・建物名・部屋番号を続けてご入力ください。";
+      msg.textContent = "住所を入れました。番地を続けてご入力ください。";
       $("address").focus();
       $("address").setSelectionRange($("address").value.length, $("address").value.length);
     } else {
@@ -570,25 +612,37 @@ $("form").addEventListener("submit", e => {
   const zip = digits($("zip").value);
   const address = $("address").value.trim();
   const tel = digits($("tel").value);
+  const time = $("time").value;
+  const kana = $("kana").value.replace(/\s+/g, " ").trim();
+  const building = $("building").value.replace(/\s+/g, " ").trim();
+  const absence = $("absence").value.replace(/\s+/g, " ").trim();
 
   if (!choice){ location.hash = "#/"; return; }
   setErr("name", name ? "" : "お名前を入力してください。"); if (!name) ok = false;
+  const kanaOk = /^[ぁ-んァ-ヶー ]+$/.test(kana);
+  setErr("kana", kanaOk ? "" : "ふりがなは、ひらがなまたはカタカナで入力してください。"); if (!kanaOk) ok = false;
   setErr("zip", zip.length === 7 ? "" : "郵便番号は7けたで入力してください。"); if (zip.length !== 7) ok = false;
   setErr("address", address ? "" : "ご住所を入力してください。"); if (!address) ok = false;
   const telOk = /^0\d{9,10}$/.test(tel);
   setErr("tel", telOk ? "" : "電話番号は 0 から始まる10〜11けたで入力してください。"); if (!telOk) ok = false;
+  setErr("building", building.length <= 100 ? "" : "建物名・部屋番号は100文字以内でご入力ください。"); if (building.length > 100) ok = false;
+  setErr("absence", absence.length <= 200 ? "" : "お届けできない期間は200文字以内でご入力ください。"); if (absence.length > 200) ok = false;
   if (!ok){
     const first = document.querySelector(".err:not(:empty)");
     if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
     return;
   }
-  data = {choice, name, zip, address, tel};
+  data = {choice, name, kana, zip, address, tel, time, building, absence};
   const p = CONFIG.PRODUCTS[choice];
   $("cProduct").textContent = `${p.name}(${p.owner})`;
   $("cName").textContent = name;
+  $("cKana").textContent = kana;
   $("cZip").textContent = zip.replace(/^(\d{3})(\d{4})$/, "$1-$2");
   $("cAddress").textContent = address;
   $("cTel").textContent = tel;
+  $("cTime").textContent = time;
+  $("cBuilding").textContent = building || "なし";
+  $("cAbsence").textContent = absence || "なし";
   $("sendError").classList.add("hidden");
   showView("confirm");
   window.scrollTo(0, 0);
