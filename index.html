@@ -144,6 +144,7 @@ a.card{text-decoration:none;color:inherit}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .grid2 div{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:12px 8px;text-align:center;font-size:13.5px;font-weight:500;color:var(--deep)}
 .items-title{font-size:15px;margin:0 0 10px}
+.items .note{font-size:12.5px;color:var(--muted);margin:10px 0 0;line-height:1.7}
 .items .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .items figure{margin:0}
 .items img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;display:block;background:var(--bg-soft)}
@@ -304,6 +305,7 @@ const CONFIG = {
         { name: "ハタハタ干物", src: "images/product-a-3.jpg" },
         { name: "烏賊醤油干し", src: "images/product-a-4.jpg" }
       ],
+      itemsNote: "※海況により素材が一部変わる可能性があります",
       noto: true,                       // true=この商品ページに「能登への想い」「仕入れ先」を出す
       supplierName: "渚水産"           // 仕入れ先(カードに表示)
     },
@@ -359,19 +361,19 @@ const CONFIG = {
     { text: "戦争が起きたかのような街並みの珠洲市、\n伝統と文化のシンボルが消失した輪島市、\n「この土地は本当に復興出来るのか…」\n当時そう思っていた光景、\n失われたものは二度と戻ってきません…",
       photo: { src: "images/noto-1.jpg", caption: "輪島市河井町 朝市通り" } },
     { text: "しかし能登では、\n我々のほんの少しのチカラと、\n地域の方々の大きな大きなチカラで、\n徐々に復興の灯がともり出してきました。" },
-    { text: "そんな能登半島の復興に\n「食べる」「知る」という形で\n貢献しませんか？" }
+    { text: "そんな能登半島の復興に\n「知る」「食べる」という形で\n貢献しませんか？" }
   ],
 
   // 仕入れ先の紹介(空欄のところは「準備中」と表示されます。あとで書きかえてください)
   SUPPLIER: {
     name: "渚水産",
     reading: "",                          // 読み仮名(例: なぎさすいさん)※任意
-    rep: "代表　北川博幸",                  // 代表者
-    message: "",                          // 代表メッセージ(あとで書く。改行もOK)
+    rep: "鮮魚卸　代表　北川博幸",            // 代表者
+    message: "鵜飼さん、紅さん、この度はご結婚、誠におめでとうございます。\n\n令和６年能登半島地震により、私たちが住む奥能登の穴水町も壊滅的な被害を被りました。しかし、私たちは諦めていません。鵜飼さんを始めとした多くの方々に支えられながら、私たちは今も必死に生活再建を進めております。\n\nご列席の皆さま、世界農業遺産にも登録されている能登半島の恵みの干物を、どうぞご賞味ください。そして、これからの時期は、加能ガニ、香箱ガニ、能登牡蠣、能登寒ブリ、甘エビなど、冬の味覚があふれる私たちの住む土地にも、ぜひ遊びに来てくださいね。",   // 代表メッセージ(改行は \n。段落の間は \n\n)
     intro: "",                            // 紹介文
     image: "images/supplier.jpg",         // 店舗写真(ファイルがなければ「準備中」枠)
-    address: "",                          // 所在地
-    url: ""                               // 公式サイトURL(例: https://example.com)
+    address: "〒927-0039 石川県鳳珠郡穴水町曽福子-8-5",   // 所在地
+    url: "http://nagisa.blogdehp.ne.jp/"      // 公式サイトURL
   }
 };
 /* ===================================================================== */
@@ -421,7 +423,7 @@ function openProduct(key){
   const items = (p.items && p.items.length) ? `
     <div class="items"><h3 class="items-title">詰め合わせの内容</h3><div class="grid">${
       p.items.map(it => `<figure><img src="${esc(it.src)}" alt="${esc(it.name)}" loading="lazy" decoding="async"><figcaption>${esc(it.name)}</figcaption></figure>`).join("")
-    }</div></div>` : "";
+    }</div>${p.itemsNote ? `<p class="note">${esc(p.itemsNote)}</p>` : ""}</div>` : "";
   const feat = (p.features && p.features.length) ? `
     <div class="feat"><h3 class="items-title">商品の特徴</h3><ul>${p.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>` : "";
   const body = x => `
