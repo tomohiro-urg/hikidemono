@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>引き出物のご選択</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eaeff3;        /* 背景 */
+  --bg-soft:#dde5ec;   /* 薄いブルーグレー */
+  --card:#f8fafb;
+  --main:#5f7487;      /* 基調のブルーグレー */
+  --deep:#3d5062;      /* 見出し・ボタン */
+  --ink:#2c3a47;
+  --muted:#6b7b89;
+  --line:#c3cfd9;
+  --gold:#C6A15B;      /* アクセントのみ */
+  --err:#a8453f;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",sans-serif;line-height:1.85;font-size:15px}
+.wrap{max-width:480px;margin:0 auto;padding:0 18px 56px}
+h1,h2,h3,.serif{font-family:"Shippori Mincho",serif;font-weight:700;color:var(--deep);letter-spacing:.06em}
+section{margin-top:44px}
+.sec-title{text-align:center;font-size:20px;margin:0 0 20px}
+.lead{text-align:center;color:var(--muted);font-size:13px;margin:0 0 18px}
+
+/* ヒーロー */
+.hero{background:var(--deep);color:#fff;text-align:center;padding:56px 22px 48px;margin:0 -18px}
+.hero .en{font-family:"Shippori Mincho",serif;color:var(--gold);letter-spacing:.3em;font-size:12px}
+.hero h1{color:#fff;font-size:26px;margin:14px 0 18px}
+.hero p{font-size:14px;margin:0;color:#e3eaf0}
+
+/* 商品カード */
+.cards{display:grid;gap:18px}
+.card{position:relative;background:var(--card);border:2px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;transition:border-color .2s, box-shadow .2s;display:block}
+.card input{position:absolute;opacity:0;pointer-events:none}
+.card:has(input:checked){border-color:var(--gold);box-shadow:0 4px 18px rgba(61,80,98,.18)}
+.card:has(input:focus-visible){outline:3px solid var(--main);outline-offset:2px}
+.card.disabled{cursor:default;opacity:.8}
+.card .ph{aspect-ratio:4/3;background:var(--bg-soft);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:var(--fit,cover);display:block}
+.card .body{padding:16px 18px 20px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.1em;color:#fff;background:var(--main);padding:1px 10px;border-radius:2px}
+.card h3{font-size:18px;margin:8px 0 6px}
+.card p{margin:0;font-size:13.5px;color:var(--muted)}
+.supplier-mini{margin-top:10px!important;font-size:14px!important;color:var(--deep)!important}
+.supplier-mini b{font-weight:700}
+.pick{margin-top:12px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--deep);font-weight:500}
+.pick i{width:18px;height:18px;border-radius:50%;border:2px solid var(--main);display:inline-block;flex:none}
+.card:has(input:checked) .pick i{background:var(--gold);border-color:var(--gold);box-shadow:inset 0 0 0 3px var(--card)}
+.card.disabled .pick i{opacity:.4}
+
+/* 能登への想い */
+.noto{background:var(--card);border-radius:6px;padding:26px 18px 28px;border:1px solid var(--line)}
+.noto p{font-size:14.5px;margin:0 0 16px}
+#notoStory{text-align:center}
+.noto #notoStory p{font-size:min(16px,calc((100vw - 78px)/19.6));line-height:2;margin:0 0 24px}
+.noto #notoStory .headline{font-size:min(28px,calc((100vw - 78px)/11.6));line-height:1.6;letter-spacing:.04em;margin:6px 0 26px}
+.noto figure{margin:0 0 22px;position:relative}
+.noto figure img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;display:block;background:var(--bg-soft)}
+.noto figcaption{position:absolute;left:0;bottom:0;max-width:92%;padding:7px 14px;font-size:17px;font-weight:700;letter-spacing:.06em;line-height:1.4;color:#fff;background:rgba(44,58,71,.72);border-radius:0 6px 0 4px}
+.supplier{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+.supplier h3{font-size:16px;margin:0 0 10px}
+.supplier h3 small{font-family:"Noto Sans JP",sans-serif;font-size:11px;color:var(--muted);letter-spacing:.05em;margin-left:6px;font-weight:400}
+.supplier .ph{aspect-ratio:3/2;background:var(--bg-soft);border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+.supplier .ph img{width:100%;height:100%;object-fit:cover}
+.supplier dl{margin:12px 0 0;font-size:13px;display:grid;grid-template-columns:4.5em 1fr;gap:4px 8px}
+.supplier dt{color:var(--muted)}
+.supplier dd{margin:0;word-break:break-all}
+.supplier a{color:var(--deep)}
+.supplier .intro{margin-top:12px!important;font-size:13.5px!important}
+.pending{color:var(--muted)}
+
+/* フォーム */
+.formbox{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:24px 18px}
+.chosen{background:var(--bg-soft);border-left:3px solid var(--gold);padding:8px 12px;font-size:13.5px;margin-bottom:18px}
+.field{margin-bottom:18px}
+label.lb{display:block;font-weight:500;font-size:13.5px;margin-bottom:4px;color:var(--deep)}
+.req{font-size:10.5px;color:#fff;background:var(--gold);padding:0 6px;border-radius:2px;margin-left:6px;vertical-align:1px}
+input[type=text],input[type=tel],textarea{width:100%;padding:12px;font-size:16px;font-family:inherit;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+input:focus,textarea:focus{outline:2px solid var(--main);outline-offset:0;border-color:var(--main)}
+.row{display:flex;gap:8px}
+.row input{flex:1}
+.err{color:var(--err);font-size:12.5px;margin:4px 0 0;min-height:0}
+.hint{font-size:12px;color:var(--muted);margin:4px 0 0}
+.btn{display:block;width:100%;padding:15px;font-size:16px;font-family:inherit;font-weight:500;letter-spacing:.1em;border-radius:4px;border:1px solid var(--deep);background:var(--deep);color:#fff;cursor:pointer}
+.btn:hover{background:#344657}
+.btn.sub{background:transparent;color:var(--deep);margin-top:10px}
+.btn.small{width:auto;padding:0 14px;font-size:13px;letter-spacing:0;white-space:nowrap;background:var(--main);border-color:var(--main)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.privacy{font-size:12px;color:var(--muted);background:var(--bg);border-radius:4px;padding:10px 12px;margin:0 0 18px}
+
+/* 確認・完了 */
+.confirm dl{margin:0 0 20px;font-size:14px}
+.confirm dt{font-size:12px;color:var(--muted);margin-top:12px}
+.confirm dd{margin:0;border-bottom:1px solid var(--line);padding-bottom:6px;word-break:break-all}
+.done,.closed{text-align:center;padding:36px 18px}
+.done .mark{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);color:var(--gold);font-size:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.formerror{background:#f6e3e1;color:var(--err);border-radius:4px;padding:10px 12px;font-size:13.5px;margin-bottom:14px}
+.hidden{display:none!important}
+/* トップのカード(リンク) */
+a.card{text-decoration:none;color:inherit}
+.card .more{margin-top:12px;font-size:13px;color:var(--deep);font-weight:500;border-top:1px dashed var(--line);padding-top:10px}
+/* 商品ページ */
+.back{margin:18px 0 12px;font-size:13px}
+.back a{color:var(--deep)}
+.back.bottom{text-align:center;margin-top:28px}
+#productView .ph{aspect-ratio:4/3;background:var(--bg-soft);border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+#productView .ph img{width:100%;height:100%;object-fit:var(--fit,cover);display:block}
+.pbody{padding:18px 2px 4px}
+.pbody .pname{font-size:23px;margin:10px 0 8px}
+.pbody p{margin:0 0 6px;font-size:14.5px}
+.inline-pick{margin-top:14px}
+.headline{display:block;font-family:"Shippori Mincho",serif;font-weight:700;color:var(--deep);font-size:17px;line-height:1.7;margin-bottom:10px}
+.rep{margin:8px 0 0!important;font-weight:500;color:var(--deep)}
+.msg-title{font-size:13px;color:var(--muted);margin:16px 0 0;font-weight:500}
+.items,.feat,.brand{margin-top:18px}
+.feat ul{margin:0;padding:0;list-style:none}
+.feat li{padding:8px 12px;margin-bottom:6px;background:var(--card);border-left:3px solid var(--gold);font-size:14.5px;font-weight:500;color:var(--deep)}
+.brand p{font-size:14px;margin:0 0 10px}
+.items-title{font-size:15px;margin:0 0 10px}
+.items .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.items figure{margin:0}
+.items img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;display:block;background:var(--bg-soft)}
+.items figcaption{font-size:12.5px;margin-top:4px;text-align:center;color:var(--deep)}
+/* 常に出る「この商品を選ぶ」ボタン */
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;transform:translateY(110%);visibility:hidden;transition:transform .25s, visibility .25s;background:rgba(234,239,243,.96);border-top:1px solid var(--line);padding:10px 18px calc(10px + env(safe-area-inset-bottom))}
+.sticky.show{transform:none;visibility:visible}
+.sticky-in{max-width:480px;margin:0 auto}
+body.has-sticky .wrap{padding-bottom:96px}
+footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero" id="hero">
+    <h1>引き出物のご選択</h1>
+    <p>本日はご列席いただき、<br>まことにありがとうございました。</p>
+  </header>
+
+  <!-- 1. トップ -->
+  <div id="vTop">
+    <section>
+      <p class="lead" id="thanksText"></p>
+      <h2 class="sec-title">お好きなほうをお選びください</h2>
+      <div class="cards" id="cards"></div>
+    </section>
+  </div>
+
+  <!-- 2. 商品ページ -->
+  <div id="vProduct" class="hidden">
+    <p class="back"><a href="#/">トップにもどる</a></p>
+    <div id="productView"></div>
+    <div class="inline-pick"><button type="button" class="btn pickBtn" id="pickInline"></button></div>
+    <!-- 能登への想い -->
+    <section id="notoSection" class="hidden">
+      <h2 class="sec-title">能登への想い</h2>
+      <div class="noto">
+        <div id="notoStory"></div>
+
+        <div class="supplier" id="supplier"></div>
+      </div>
+    </section>
+    <p class="back bottom"><a href="#/">トップにもどって、もう一方も見る</a></p>
+  </div>
+
+  <!-- 3. 申し込みフォーム -->
+    <!-- 入力フォーム -->
+    <section id="vForm" class="hidden">
+      <h2 class="sec-title">お届け先のご入力</h2>
+      <div class="formbox">
+        <div class="chosen" id="chosenView"></div>
+        <p class="privacy">ご入力いただいた個人情報は、引き出物の発送のみに使用し、それ以外の目的では使用いたしません。</p>
+        <div class="formerror hidden" id="formError"></div>
+        <form id="form" novalidate autocomplete="on">
+          <div class="field">
+            <label class="lb" for="name">お名前<span class="req">必須</span></label>
+            <input type="text" id="name" name="name" autocomplete="name" placeholder="例）山田 太郎">
+            <p class="err" data-for="name"></p>
+          </div>
+          <div class="field">
+            <label class="lb" for="zip">郵便番号<span class="req">必須</span></label>
+            <div class="row">
+              <input type="tel" id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" placeholder="例）4400000">
+              <button type="button" class="btn small" id="zipBtn">住所を入力</button>
+            </div>
+            <p class="hint">ハイフンはあってもなくても大丈夫です。7けた入れると住所が自動で入ります。</p>
+            <p class="err" data-for="zip"></p>
+          </div>
+          <div class="field">
+            <label class="lb" for="address">ご住所<span class="req">必須</span></label>
+            <input type="text" id="address" name="address" autocomplete="street-address" placeholder="番地・建物名・部屋番号まで入れてください">
+            <p class="hint" id="zipMsg">番地・建物名・部屋番号は、ご自身で続きをご入力ください。</p>
+            <p class="err" data-for="address"></p>
+          </div>
+          <div class="field">
+            <label class="lb" for="tel">電話番号<span class="req">必須</span></label>
+            <input type="tel" id="tel" name="tel" inputmode="tel" autocomplete="tel" placeholder="例）09012345678">
+            <p class="hint">ハイフンはあってもなくても大丈夫です。</p>
+            <p class="err" data-for="tel"></p>
+          </div>
+          <button type="submit" class="btn">入力内容を確認する</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 確認 -->
+    <section id="stepConfirm" class="hidden">
+      <h2 class="sec-title">ご入力内容の確認</h2>
+      <div class="formbox confirm">
+        <div class="formerror hidden" id="sendError"></div>
+        <dl>
+          <dt>お選びの引き出物</dt><dd id="cProduct"></dd>
+          <dt>お名前</dt><dd id="cName"></dd>
+          <dt>郵便番号</dt><dd id="cZip"></dd>
+          <dt>ご住所</dt><dd id="cAddress"></dd>
+          <dt>電話番号</dt><dd id="cTel"></dd>
+        </dl>
+        <p class="hint" style="margin-bottom:14px">送信後の変更はできません。内容をよくご確認ください。</p>
+        <button type="button" class="btn" id="sendBtn">この内容で送信する</button>
+        <button type="button" class="btn sub" id="backBtn">修正する</button>
+      </div>
+    </section>
+
+  <!-- 完了 -->
+  <section id="stepDone" class="hidden">
+    <div class="formbox done">
+      <h2 class="sec-title" style="margin-bottom:12px">ご回答ありがとうございました</h2>
+      <p>お届け先を受け付けました。<br>引き出物は、準備が整い次第お送りいたします。<br>このページはそのまま閉じていただいて大丈夫です。</p>
+    </div>
+  </section>
+
+  <!-- すでに受付済み -->
+  <section id="stepDup" class="hidden">
+    <div class="formbox done">
+      <h2 class="sec-title" style="margin-bottom:12px">すでに受付済みです</h2>
+      <p>このお電話番号では、すでにご回答をいただいております。<br>ご不明な点がございましたら、新郎新婦までお知らせください。</p>
+    </div>
+  </section>
+
+  <!-- 受付終了 -->
+  <section id="stepClosed" class="hidden">
+    <div class="formbox closed">
+      <h2 class="sec-title">受付は終了しました</h2>
+      <p>引き出物のご選択の受付は終了いたしました。<br>ご不明な点がございましたら、新郎新婦までお知らせください。</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="sticky" id="stickyBar"><div class="sticky-in"><button type="button" class="btn pickBtn" id="pickBtn"></button></div></div>
+
+<script>
+/* =====================================================================
+   ★ ここだけ書きかえれば内容を変えられます(設定エリア)
+   ===================================================================== */
+const CONFIG = {
+  // GASをデプロイしたあとに発行される「ウェブアプリのURL」をここに貼る
+  GAS_URL: "ここにGASのウェブアプリURLを貼る",
+
+  // 締切(日本時間)
+  DEADLINE: "2026-11-14T23:59:59+09:00",
+
+  THANKS: "新郎新婦より、ささやかな心づくしをご用意いたしました。<br>2つのうち、お好みのほうをひとつお選びください。<br>商品をタップすると、くわしい説明をご覧いただけます。",
+
+  PRODUCTS: {
+    A: {
+      owner: "新郎セレクト",
+      name: "能登の干物詰め合わせ",
+      desc: "世界農業遺産の地、能登半島の美しい自然の中で大切に育まれた味覚をご賞味下さい",
+      image: "images/product-a.jpg",
+      preparing: false,
+      short: "世界農業遺産の地、能登半島の美しい自然の中で大切に育まれた味覚をご賞味下さい",   // トップのボタンに添える言葉   // トップのカードに出す短い説明
+      items: [                          // 詰め合わせの内容(写真つき)
+        { name: "はちめ(メバル)干物", src: "images/product-a-1.jpg" },
+        { name: "ふぐ干物", src: "images/product-a-2.jpg" },
+        { name: "ハタハタ干物", src: "images/product-a-3.jpg" },
+        { name: "烏賊醤油干し", src: "images/product-a-4.jpg" }
+      ],
+      noto: true,                       // true=この商品ページに「能登への想い」「仕入れ先」を出す
+      supplierName: "渚水産"           // 仕入れ先(カードに表示)
+    },
+    B: {
+      owner: "新婦セレクト",
+      name: "クレンジング",
+      desc: "普段頑張っているすべての貴女へ、お肌へ特別なご褒美はいかがでしょうか？",
+      features: ["W洗顔不要", "敏感肌でも安心", "朝晩使用で1.5〜2ヶ月"],
+      brand: {
+        name: "クリスティーナ",
+        text: [
+          "クリスティーナは、1982年にイスラエルで誕生したプレミアムスキンケアブランドです。長年にわたり培われた豊富な知見と実績をもとに、一人ひとり異なる肌質や肌悩みに寄り添い、肌の状態に合わせた本質的なケアを追求しています。",
+          "独自の先進技術と厳選された成分を融合した製品は、肌本来のコンディションを整え、健やかで美しい肌へ導きます。うるおいとハリに満ちた、内側から輝くようななめらかな肌を目指せる、専門性の高いスキンケアブランドです。"
+        ],
+        image: ""                        // 創業者・本社社屋などの写真(あれば images/brand.jpg など)
+      },
+      short: "普段頑張っているすべての貴女へ、お肌へ特別なご褒美はいかがでしょうか？",   // トップのボタンに添える言葉
+      noto: false,
+      image: "images/product-b.jpg",
+      fit: "contain",                   // 画像が切れないように全体を表示
+      preparing: false,                 // true=「準備中」表示(選べません) / false=選べる
+      supplierName: ""
+    }
+  },
+
+  // 能登への想い:文章と写真が上から順に並びます。写真は images フォルダのファイルを差しかえるだけでOK
+  // headline=見出し / text=文章(改行は \n) / photo=その文章のあとに入れる写真(caption=地名)
+  NOTO_STORY: [
+    { headline: "能登半島の味覚が\n凝縮された干物を食べて\n復興に携わりませんか？" },
+    { text: "令和６年能登半島地震により\n壊滅的な被害を被った石川県能登半島。",
+      photo: { src: "images/noto-3.jpg", caption: "珠洲市宝立町" } },
+    { text: "そんな彼の地で新郎の知洋は\n発災当初より復興とボランティアに\n携わってきました。",
+      photo: { src: "images/noto-2.jpg", caption: "輪島市河井町 五島屋" } },
+    { text: "戦争が起きたかのような街並みの珠洲市、\n伝統と文化のシンボルが消失した輪島市、\n「この土地は本当に復興出来るのか…」\n当時そう思っていた光景、\n失われたものは二度と戻ってきません…",
+      photo: { src: "images/noto-1.jpg", caption: "輪島市河井町 朝市通り" } },
+    { text: "しかし能登では、\n我々のほんの少しのチカラと、\n地域の方々の大きな大きなチカラで、\n徐々に復興の灯がともり出してきました。" },
+    { text: "そんな能登半島の復興に\n「食べる」「知る」という形で\n貢献しませんか？" }
+  ],
+
+  // 仕入れ先の紹介(空欄のところは「準備中」と表示されます。あとで書きかえてください)
+  SUPPLIER: {
+    name: "渚水産",
+    reading: "",                          // 読み仮名(例: なぎさすいさん)※任意
+    rep: "代表　北川博幸",                  // 代表者
+    message: "",                          // 代表メッセージ(あとで書く。改行もOK)
+    intro: "",                            // 紹介文
+    image: "images/supplier.jpg",         // 店舗写真(ファイルがなければ「準備中」枠)
+    address: "",                          // 所在地
+    url: ""                               // 公式サイトURL(例: https://example.com)
+  }
+};
+/* ===================================================================== */
+
+const $ = id => document.getElementById(id);
+const DEADLINE = new Date(CONFIG.DEADLINE).getTime();
+let choice = null;   // "A" or "B"
+let data = null;     // 確認中のデータ
+let sending = false;
+
+/* ---------- 共通 ---------- */
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toHalf(s){
+  return String(s).replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+                  .replace(/[ー−‐―－]/g, "-");
+}
+function digits(s){ return toHalf(s).replace(/\D/g, ""); }
+function imgOrPlaceholder(src, label){
+  return `<img src="${esc(src)}" alt="${esc(label)}" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<span class=&quot;pending&quot;>写真を準備中です</span>'">`;
+}
+
+/* ---------- 締切 ---------- */
+function isClosed(){ return Date.now() > DEADLINE; }
+function applyDeadline(){
+  if (isClosed()) showView("closed");
+}
+
+/* ---------- 画面の切りかえ ---------- */
+const VIEWS = {top:"vTop", product:"vProduct", form:"vForm", confirm:"stepConfirm", done:"stepDone", dup:"stepDup", closed:"stepClosed"};
+let viewing = null;      // いま商品ページで見ている商品 "A" or "B"
+let finished = null;     // 送信が終わったら "done" / "dup"
+function showView(name){
+  Object.values(VIEWS).forEach(id => $(id).classList.add("hidden"));
+  $(VIEWS[name]).classList.remove("hidden");
+  $("hero").classList.toggle("hidden", !(name === "top" || name === "closed"));
+  document.body.classList.toggle("has-sticky", name === "product");
+  updateSticky();
+}
+function updateSticky(){
+  const on = !$("vProduct").classList.contains("hidden") && window.scrollY > 260;
+  $("stickyBar").classList.toggle("show", on);
+}
+function openProduct(key){
+  const p = CONFIG.PRODUCTS[key];
+  viewing = key;
+  const sup = p.supplierName ? `<p class="supplier-mini">仕入れ先　<b>${esc(p.supplierName)}</b></p>` : "";
+  const items = (p.items && p.items.length) ? `
+    <div class="items"><h3 class="items-title">詰め合わせの内容</h3><div class="grid">${
+      p.items.map(it => `<figure><img src="${esc(it.src)}" alt="${esc(it.name)}" loading="lazy" decoding="async"><figcaption>${esc(it.name)}</figcaption></figure>`).join("")
+    }</div></div>` : "";
+  const feat = (p.features && p.features.length) ? `
+    <div class="feat"><h3 class="items-title">商品の特徴</h3><ul>${p.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>` : "";
+  const brand = p.brand ? `
+    <div class="brand"><h3 class="items-title">ブランドのご紹介　${esc(p.brand.name)}</h3>
+    ${p.brand.image ? `<div class="ph" style="margin-bottom:10px">${imgOrPlaceholder(p.brand.image, p.brand.name)}</div>` : ""}
+    ${p.brand.text.map(t => `<p>${esc(t)}</p>`).join("")}</div>` : "";
+  $("productView").innerHTML = `
+    <div class="ph" style="${p.fit ? "--fit:" + p.fit : ""}">${imgOrPlaceholder(p.image, p.name)}</div>
+    <div class="pbody">
+      <span class="tag">${esc(p.owner)}</span>
+      <h2 class="pname">${esc(p.name)}</h2>
+      <p>${p.preparing ? "ただいま準備中です。" : ""}${esc(p.desc)}</p>
+      ${sup}
+    </div>${feat}${items}${brand}`;
+  $("notoSection").classList.toggle("hidden", !p.noto);
+  document.querySelectorAll(".pickBtn").forEach(b => {
+    b.disabled = !!p.preparing;
+    b.textContent = p.preparing ? "準備中のため、まだ選べません" : "この商品を選ぶ";
+  });
+  showView("product");
+}
+function pick(){
+  const p = viewing && CONFIG.PRODUCTS[viewing];
+  if (!p || p.preparing) return;
+  choice = viewing;
+  location.hash = "#/form";
+}
+function route(){
+  if (isClosed()){ showView("closed"); return; }
+  if (finished){ showView(finished); return; }
+  const h = location.hash;
+  if (h === "#/a" || h === "#/b"){
+    openProduct(h === "#/a" ? "A" : "B");
+  } else if (h === "#/form" && choice){
+    const p = CONFIG.PRODUCTS[choice];
+    $("chosenView").innerHTML = `お選びの引き出物　<b>${esc(p.name)}</b>(${esc(p.owner)})　<a href="#/">選びなおす</a>`;
+    showView("form");
+  } else {
+    if (h && h !== "#/") history.replaceState(null, "", "#/");
+    showView("top");
+  }
+  window.scrollTo(0, 0);
+}
+
+/* ---------- 描画 ---------- */
+function renderCards(){
+  const wrap = $("cards");
+  Object.entries(CONFIG.PRODUCTS).forEach(([key, p]) => {
+    const a = document.createElement("a");
+    a.href = "#/" + key.toLowerCase();
+    a.className = "card" + (p.preparing ? " disabled" : "");
+    a.innerHTML = `
+      <div class="ph" style="${p.fit ? "--fit:" + p.fit : ""}">${imgOrPlaceholder(p.image, p.name)}</div>
+      <div class="body">
+        <span class="tag">${esc(p.owner)}</span>
+        <h3>${esc(p.name)}</h3>
+        <p>${esc(p.short || p.desc)}</p>
+        <div class="more">${p.preparing ? "準備中です。内容を見る" : "くわしく見る"}</div>
+      </div>`;
+    wrap.appendChild(a);
+  });
+}
+
+function renderNoto(){
+  $("notoStory").innerHTML = CONFIG.NOTO_STORY.map(b => {
+    let h = "";
+    if (b.headline) h += `<p class="headline">${esc(b.headline).replace(/\n/g, "<br>")}</p>`;
+    if (b.text) h += `<p>${esc(b.text).replace(/\n/g, "<br>")}</p>`;
+    if (b.photo) h += `<figure>${imgOrPlaceholder(b.photo.src, b.photo.caption || "能登の写真")}${b.photo.caption ? `<figcaption>${esc(b.photo.caption)}</figcaption>` : ""}</figure>`;
+    return h;
+  }).join("");
+
+  // 仕入れ先
+  const s = CONFIG.SUPPLIER;
+  const ph = v => v ? esc(v) : '<span class="pending">準備中</span>';
+  const urlHtml = s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a>` : '<span class="pending">準備中</span>';
+  $("supplier").innerHTML = `
+    <h3>生産者のご紹介　${esc(s.name)}<small>${esc(s.reading || "")}</small></h3>
+    <div class="ph">${imgOrPlaceholder(s.image, s.name + " " + (s.rep || ""))}</div>
+    ${s.rep ? `<p class="rep">${esc(s.rep)}</p>` : ""}
+    ${s.intro ? `<p class="intro">${esc(s.intro)}</p>` : ""}
+    <h4 class="msg-title">代表メッセージ</h4>
+    <p class="intro">${s.message ? esc(s.message).replace(/\n/g, "<br>") : '<span class="pending">準備中です。</span>'}</p>
+    <dl><dt>所在地</dt><dd>${ph(s.address)}</dd><dt>ウェブ</dt><dd>${urlHtml}</dd></dl>`;
+}
+
+/* ---------- 郵便番号 → 住所 ---------- */
+let lastZip = "";
+async function lookupZip(){
+  const z = digits($("zip").value);
+  const msg = $("zipMsg");
+  if (z.length !== 7){ msg.textContent = "郵便番号は7けたで入力してください。"; return; }
+  if (z === lastZip) return;
+  msg.textContent = "住所を調べています…";
+  try{
+    const r = await fetch("https://zipcloud.ibsnet.co.jp/api/search?zipcode=" + z);
+    const j = await r.json();
+    if (j.results && j.results[0]){
+      const a = j.results[0];
+      const base = a.address1 + a.address2 + a.address3;
+      const cur = $("address").value.trim();
+      if (!cur || cur === ($("address").dataset.auto || "")){
+        $("address").value = base;
+        $("address").dataset.auto = base;
+      }
+      lastZip = z;
+      msg.textContent = "住所を入れました。番地・建物名・部屋番号を続けてご入力ください。";
+      $("address").focus();
+      $("address").setSelectionRange($("address").value.length, $("address").value.length);
+    } else {
+      msg.textContent = "該当する住所が見つかりませんでした。お手数ですが住所を直接ご入力ください。";
+    }
+  }catch(e){
+    msg.textContent = "住所を自動で入れられませんでした。お手数ですが住所を直接ご入力ください。";
+  }
+}
+$("zip").addEventListener("input", () => { if (digits($("zip").value).length === 7) lookupZip(); });
+$("zipBtn").addEventListener("click", () => { lastZip = ""; lookupZip(); });
+
+/* ---------- 入力チェック → 確認 ---------- */
+function setErr(name, msg){
+  document.querySelector(`.err[data-for="${name}"]`).textContent = msg || "";
+}
+$("form").addEventListener("submit", e => {
+  e.preventDefault();
+  if (isClosed()){ applyDeadline(); return; }
+  $("formError").classList.add("hidden");
+  let ok = true;
+  const name = toHalf($("name").value).replace(/\s+/g, " ").trim();
+  const zip = digits($("zip").value);
+  const address = $("address").value.trim();
+  const tel = digits($("tel").value);
+
+  if (!choice){ location.hash = "#/"; return; }
+  setErr("name", name ? "" : "お名前を入力してください。"); if (!name) ok = false;
+  setErr("zip", zip.length === 7 ? "" : "郵便番号は7けたで入力してください。"); if (zip.length !== 7) ok = false;
+  setErr("address", address ? "" : "ご住所を入力してください。"); if (!address) ok = false;
+  const telOk = /^0\d{9,10}$/.test(tel);
+  setErr("tel", telOk ? "" : "電話番号は 0 から始まる10〜11けたで入力してください。"); if (!telOk) ok = false;
+  if (!ok){
+    const first = document.querySelector(".err:not(:empty)");
+    if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
+    return;
+  }
+  data = {choice, name, zip, address, tel};
+  const p = CONFIG.PRODUCTS[choice];
+  $("cProduct").textContent = `${p.name}(${p.owner})`;
+  $("cName").textContent = name;
+  $("cZip").textContent = zip.replace(/^(\d{3})(\d{4})$/, "$1-$2");
+  $("cAddress").textContent = address;
+  $("cTel").textContent = tel;
+  $("sendError").classList.add("hidden");
+  showView("confirm");
+  window.scrollTo(0, 0);
+});
+
+$("backBtn").addEventListener("click", () => {
+  if (sending) return;
+  showView("form");
+  window.scrollTo(0, 0);
+});
+
+/* ---------- 送信(連打防止つき) ---------- */
+function showSendError(msg){
+  const el = $("sendError");
+  el.textContent = msg; el.classList.remove("hidden");
+}
+$("sendBtn").addEventListener("click", async () => {
+  if (sending) return;               // 連打防止(送信中は何もしない)
+  if (isClosed()){ applyDeadline(); return; }
+  sending = true;
+  const btn = $("sendBtn");
+  btn.disabled = true; $("backBtn").disabled = true;
+  btn.textContent = "送信しています…";
+  $("sendError").classList.add("hidden");
+  try{
+    if (!/^https:\/\//.test(CONFIG.GAS_URL)) throw new Error("not-configured");
+    const res = await fetch(CONFIG.GAS_URL, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},   // 事前確認通信を避けるため text/plain
+      body: JSON.stringify(data)
+    });
+    const j = await res.json();
+    if (j.status === "ok"){
+      finished = "done";
+      showView("done");
+      window.scrollTo(0, 0);
+      return;                         // 成功後はボタンを戻さない(二重送信防止)
+    }
+    if (j.status === "duplicate"){
+      finished = "dup";
+      showView("dup");
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (j.status === "closed"){ applyDeadline(); return; }
+    throw new Error(j.message || "error");
+  }catch(err){
+    showSendError("送信できませんでした。電波のよい場所で、もう一度お試しください。何度も失敗する場合は新郎新婦までお知らせください。");
+    btn.disabled = false; $("backBtn").disabled = false;
+    btn.textContent = "この内容で送信する";
+    sending = false;
+  }
+});
+
+/* ---------- 起動 ---------- */
+$("thanksText").innerHTML = CONFIG.THANKS;
+renderCards();
+renderNoto();
+$("pickBtn").addEventListener("click", pick);
+$("pickInline").addEventListener("click", pick);
+window.addEventListener("hashchange", route);
+window.addEventListener("scroll", updateSticky, {passive:true});
+route();
+setInterval(() => { if (isClosed() && !finished) showView("closed"); }, 30000);
+</script>
+</body>
+</html>
