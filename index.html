@@ -817,20 +817,17 @@ window.addEventListener("hashchange", route);
 window.addEventListener("scroll", updateSticky, {passive:true});
 route();
 
-/* ---------- 入口のごあいさつ(最初に開いたときだけ。2回目からは出さない) ---------- */
+/* ---------- 入口のごあいさつ(トップを開くたびに出す) ---------- */
 (function(){
   const el = $("intro");
-  let seen = false;
-  try { seen = localStorage.getItem("introSeen") === "1"; } catch(e){}
   const force = new URLSearchParams(location.search).get("intro") === "1";   // ?intro=1 を付けると、いつでも見られる
   const atTop = !location.hash || location.hash === "#/";                   // 商品ページなどを直接開いたときは出さない
-  if (isClosed() || (!force && (seen || !atTop))) return;
+  if (isClosed() || (!force && !atTop)) return;
   el.classList.remove("hidden");
   document.body.style.overflow = "hidden";
   const timer = setTimeout(close, 11000);                                   // 11秒たつと自動で進む
   function close(){
     clearTimeout(timer);
-    try { localStorage.setItem("introSeen", "1"); } catch(e){}
     el.classList.add("leaving");
     setTimeout(() => { el.classList.add("hidden"); document.body.style.overflow = ""; window.scrollTo(0, 0); }, 600);
   }
