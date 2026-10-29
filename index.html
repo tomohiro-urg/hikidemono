@@ -7,6 +7,7 @@
 <title>引き出物のご選択</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="images/intro-bg.webp">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -157,9 +158,68 @@ a.card{text-decoration:none;color:inherit}
 .sticky-in{max-width:480px;margin:0 auto}
 body.has-sticky .wrap{padding-bottom:96px}
 footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
+
+/* 入口のごあいさつ: 二人が中央に並ぶと、背景が南国のビーチにかわる */
+#intro{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none;opacity:1;transition:opacity .6s}
+@media (max-height:560px){#intro{align-items:flex-start;overflow-y:auto;touch-action:pan-y}#intro .intro-stage{margin:12px auto 24px}}
+#intro.leaving{opacity:0}
+.intro-sky{position:absolute;inset:0;background:linear-gradient(180deg,#cfe4f3 0%,#e4eff7 55%,#a9cde4 100%)}
+.intro-beach{position:absolute;inset:0;background:#2f9be0 url(images/intro-bg.webp) center bottom/cover no-repeat;opacity:0;transform:scale(1.08);animation:introBeach 1.6s 2.1s ease-out forwards}
+.intro-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 62%,rgba(255,255,255,.55),rgba(255,255,255,0) 60%);opacity:0;animation:introGlow 1.4s 1.9s ease-out forwards;pointer-events:none}
+.intro-stage{position:relative;width:min(92vw,520px);text-align:center;margin-top:14vh}
+.intro-title{display:inline-block;font-family:"Shippori Mincho",serif;font-weight:700;color:var(--deep);font-size:24px;font-size:clamp(20px,6.6vw,30px);line-height:1.45;letter-spacing:.06em;margin:0 0 24px;padding:6px 20px;background:rgba(255,255,255,.7);border-radius:16px;box-shadow:0 3px 12px rgba(0,60,100,.16)}
+.intro-title span{display:block;opacity:0;animation:introUp .8s ease forwards}
+.intro-title span:nth-child(1){animation-delay:.3s}
+.intro-title span:nth-child(2){animation-delay:.9s}
+.intro-scene{position:relative;height:0;padding-bottom:49.37%}   /* 1189:587 の高さを、古い機種でも確保する */
+.intro-scene img{position:absolute;display:block;height:auto;filter:drop-shadow(0 5px 6px rgba(0,60,100,.28))}
+.intro-groom{left:0;top:2.73%;width:45.84%;animation:introFromL 1.4s .5s cubic-bezier(.2,.8,.25,1) both}
+.intro-bride{left:45.42%;top:0;width:54.58%;animation:introFromR 1.4s .5s cubic-bezier(.2,.8,.25,1) both}
+.intro-bubble{position:absolute;left:1%;top:-17%;padding:5px 16px;background:#fff;border:2px solid #2c3a47;border-radius:22px;font-weight:700;font-size:18px;font-size:clamp(16px,5vw,22px);color:#2c3a47;opacity:0;transform-origin:70% 100%;animation:introPop .5s 2.0s ease-out forwards}
+.intro-bubble::after{content:"";position:absolute;left:62%;bottom:-8px;width:12px;height:12px;background:#fff;border-right:2px solid #2c3a47;border-bottom:2px solid #2c3a47;transform:rotate(45deg)}
+.intro-names{display:flex;margin-top:10px;font-weight:700;letter-spacing:.08em;font-size:15px;font-size:clamp(13px,3.8vw,17px);color:var(--deep);opacity:0;animation:introUp .7s 2.4s ease forwards}
+.intro-names span{width:50%}
+.intro-names span i{font-style:normal;display:inline-block;padding:3px 16px;background:rgba(255,255,255,.86);border-radius:14px;box-shadow:0 2px 8px rgba(0,60,100,.2)}
+.intro-go{width:min(80%,320px);margin:22px auto 0;border:2px solid #fff;box-shadow:0 4px 14px rgba(0,50,90,.3);opacity:0;animation:introUp .7s 3.2s ease forwards}
+/* スヌーピーは、背景がかわったあとに、ひとつずつ現れる */
+.sn{position:absolute;height:auto;opacity:0;filter:drop-shadow(0 4px 5px rgba(0,60,100,.3));animation:introSn .6s ease-out forwards}
+.sn-1{width:90px;width:clamp(70px,20vw,110px);left:3%;bottom:3%;animation-delay:3.0s}
+.sn-2{width:74px;width:clamp(56px,16vw,90px);right:3%;bottom:3%;animation-delay:3.3s}
+.sn-3{width:70px;width:clamp(54px,15vw,86px);left:4%;top:13%;animation-delay:3.6s}
+.sn-4{width:86px;width:clamp(66px,19vw,104px);right:3%;top:11%;animation-delay:3.9s}
+.intro-skip{position:absolute;top:14px;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:2;background:rgba(255,255,255,.78);border:1px solid var(--main);border-radius:20px;padding:5px 14px;font-family:inherit;font-size:13px;color:var(--deep);cursor:pointer}
+@keyframes introUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes introFromL{0%{transform:translateX(-110vw)}72%{transform:translateX(1.5%)}100%{transform:none}}
+@keyframes introFromR{0%{transform:translateX(110vw)}72%{transform:translateX(-1.5%)}100%{transform:none}}
+@keyframes introPop{0%{opacity:0;transform:scale(.2)}70%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:none}}
+@keyframes introBeach{0%{opacity:0;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+@keyframes introGlow{0%{opacity:0}35%{opacity:1}100%{opacity:0}}
+@keyframes introSn{0%{opacity:0;transform:translateY(12px) scale(.7)}70%{opacity:1;transform:translateY(-3px) scale(1.04)}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#intro *{animation-duration:.01s!important;animation-delay:0s!important}}
 </style>
 </head>
 <body>
+
+<div id="intro" class="hidden" role="dialog" aria-label="ごあいさつ">
+  <div class="intro-sky"></div>
+  <div class="intro-beach"></div>
+  <div class="intro-glow"></div>
+  <img class="sn sn-1" src="images/sn-sun.webp" alt="" aria-hidden="true" decoding="async">
+  <img class="sn sn-2" src="images/sn-hat.webp" alt="" aria-hidden="true" decoding="async">
+  <img class="sn sn-3" src="images/sn-drink.webp" alt="" aria-hidden="true" decoding="async">
+  <img class="sn sn-4" src="images/sn-pilot.webp" alt="" aria-hidden="true" decoding="async">
+  <button type="button" id="introSkip" class="intro-skip">スキップ</button>
+  <div class="intro-stage">
+    <p class="intro-title"><span>結婚式に来てくれて</span><span>ありがとう</span></p>
+    <div class="intro-scene">
+      <img class="intro-groom" src="images/intro-groom.webp" alt="白いタキシードを着たブタくんが、黒いバイクに乗っています" decoding="async">
+      <img class="intro-bride" src="images/intro-bride.webp" alt="ウェディングドレスの新婦が、ハーレーに乗っています" decoding="async">
+      <div class="intro-bubble">フゴッ</div>
+    </div>
+    <div class="intro-names"><span><i>TOMOHIRO</i></span><span><i>AKANE</i></span></div>
+    <button type="button" id="introGo" class="btn intro-go">引き出物を選ぶ</button>
+  </div>
+</div>
 
 <div class="wrap">
 
@@ -756,6 +816,27 @@ $("pickInline").addEventListener("click", pick);
 window.addEventListener("hashchange", route);
 window.addEventListener("scroll", updateSticky, {passive:true});
 route();
+
+/* ---------- 入口のごあいさつ(最初に開いたときだけ。2回目からは出さない) ---------- */
+(function(){
+  const el = $("intro");
+  let seen = false;
+  try { seen = localStorage.getItem("introSeen") === "1"; } catch(e){}
+  const force = new URLSearchParams(location.search).get("intro") === "1";   // ?intro=1 を付けると、いつでも見られる
+  const atTop = !location.hash || location.hash === "#/";                   // 商品ページなどを直接開いたときは出さない
+  if (isClosed() || (!force && (seen || !atTop))) return;
+  el.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  const timer = setTimeout(close, 11000);                                   // 11秒たつと自動で進む
+  function close(){
+    clearTimeout(timer);
+    try { localStorage.setItem("introSeen", "1"); } catch(e){}
+    el.classList.add("leaving");
+    setTimeout(() => { el.classList.add("hidden"); document.body.style.overflow = ""; window.scrollTo(0, 0); }, 600);
+  }
+  $("introSkip").addEventListener("click", close);
+  $("introGo").addEventListener("click", close);
+})();
 setInterval(() => { if (isClosed() && !finished) showView("closed"); }, 30000);
 </script>
 </body>
