@@ -161,7 +161,7 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
 
 /* 入口のごあいさつ: 二人が中央に並ぶと、背景が南国のビーチにかわる */
 #intro{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;touch-action:none;opacity:1;transition:opacity .6s}
-@media (min-height:561px) and (max-height:720px){#intro .intro-stage{margin-top:46vh}#intro .intro-go{margin-top:14px}.sn-1,.sn-2{bottom:.5%}.sn-1{width:62px}.sn-2{width:50px}}
+@media (min-height:561px) and (max-height:720px){#intro .intro-stage{margin-top:46vh}#intro .intro-go{margin-top:14px}.sn-1{width:62px}.sn-2{width:50px}.sn-3{width:54px}.sn-4{width:64px}}
 @media (max-height:560px){#intro{flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;touch-action:pan-y}#intro .intro-head{position:relative;top:auto;margin-top:12px}#intro .intro-stage{margin:44px auto 24px}}
 #intro.leaving{opacity:0}
 .intro-sky{position:absolute;inset:0;background:linear-gradient(180deg,#cfe4f3 0%,#e4eff7 55%,#a9cde4 100%)}
@@ -185,8 +185,8 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
 .intro-go{width:min(80%,320px);margin:22px auto 0;border:2px solid #fff;box-shadow:0 4px 14px rgba(0,50,90,.3);opacity:0;animation:introUp .7s 3.2s ease forwards}
 /* スヌーピーは、背景がかわったあとに、ひとつずつ現れる */
 .sn{position:absolute;height:auto;opacity:0;filter:drop-shadow(0 4px 5px rgba(0,60,100,.3));animation:introSn .6s ease-out forwards}
-.sn-1{width:90px;width:clamp(70px,20vw,110px);left:3%;bottom:3%;animation-delay:3.0s}
-.sn-2{width:74px;width:clamp(56px,16vw,90px);right:3%;bottom:3%;animation-delay:3.3s}
+.sn-1{width:90px;width:clamp(70px,20vw,110px);left:3%;top:33%;animation-delay:3.0s}
+.sn-2{width:74px;width:clamp(56px,16vw,90px);right:3%;top:32%;animation-delay:3.3s}
 .sn-3{width:70px;width:clamp(54px,15vw,86px);left:4%;top:21%;animation-delay:3.6s}
 .sn-4{width:86px;width:clamp(66px,19vw,104px);right:3%;top:20%;animation-delay:3.9s}
 .intro-skip{position:absolute;top:14px;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:2;background:rgba(255,255,255,.78);border:1px solid var(--main);border-radius:20px;padding:5px 14px;font-family:inherit;font-size:13px;color:var(--deep);cursor:pointer}
