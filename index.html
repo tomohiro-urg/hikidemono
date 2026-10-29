@@ -175,7 +175,7 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
 .intro-title span:nth-child(2){animation-delay:.9s}
 .intro-scene{position:relative;height:0;padding-bottom:49.37%}   /* 1189:587 の高さを、古い機種でも確保する */
 .intro-scene img{position:absolute;display:block;height:auto;filter:drop-shadow(0 5px 6px rgba(0,60,100,.28))}
-.intro-groom{left:0;top:2.73%;width:45.84%;animation:introFromL 1.4s .5s cubic-bezier(.2,.8,.25,1) both}
+.intro-groom{left:0;top:2.73%;width:45.84%;animation:introFromR 1.4s .5s cubic-bezier(.2,.8,.25,1) both}
 .intro-bride{left:45.42%;top:0;width:54.58%;animation:introFromR 1.4s .5s cubic-bezier(.2,.8,.25,1) both}
 .intro-bubble{position:absolute;left:1%;top:-17%;padding:5px 16px;background:#fff;border:2px solid #2c3a47;border-radius:22px;font-weight:700;font-size:18px;font-size:clamp(16px,5vw,22px);color:#2c3a47;opacity:0;transform-origin:70% 100%;animation:introPop .5s 2.0s ease-out forwards}
 .intro-bubble::after{content:"";position:absolute;left:62%;bottom:-8px;width:12px;height:12px;background:#fff;border-right:2px solid #2c3a47;border-bottom:2px solid #2c3a47;transform:rotate(45deg)}
@@ -191,7 +191,7 @@ footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:40px}
 .sn-4{width:86px;width:clamp(66px,19vw,104px);right:3%;top:20%;animation-delay:3.9s}
 .intro-skip{position:absolute;top:14px;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:2;background:rgba(255,255,255,.78);border:1px solid var(--main);border-radius:20px;padding:5px 14px;font-family:inherit;font-size:13px;color:var(--deep);cursor:pointer}
 @keyframes introUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes introFromL{0%{transform:translateX(-110vw)}72%{transform:translateX(1.5%)}100%{transform:none}}
+
 @keyframes introFromR{0%{transform:translateX(110vw)}72%{transform:translateX(-1.5%)}100%{transform:none}}
 @keyframes introPop{0%{opacity:0;transform:scale(.2)}70%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:none}}
 @keyframes introBeach{0%{opacity:0;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
